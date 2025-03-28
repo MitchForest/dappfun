@@ -94,19 +94,20 @@ export const mockListings: Listing[] = [
     category: 'defi',
     name: 'Jupiter',
     description: 'The best swap aggregator on Solana',
+    url: 'https://jup.ag',
     tags: ['SPOT DEX', 'PERPS DEX', 'ONRAMP'],
     status: ListingStatus.LISTED,
-    createdAt: randomDate(),
-    updatedAt: randomDate(),
-    lastApprovedAt: randomDate(),
-    upvotes: 1000,
-    comments: { count: 50 },
+    createdAt: '2023-01-15T00:00:00Z',
+    updatedAt: '2024-03-15T00:00:00Z',
+    lastApprovedAt: '2024-03-15T00:00:00Z',
+    upvotes: 25000,
+    comments: { count: 1800 },
     makers: getRandomMakers(3),
     submitter: mockCurators[0],
     curators: getRandomCurators(4),
     activity: {
-      upvotes30d: 250,
-      comments30d: 15
+      upvotes30d: 800,
+      comments30d: 45
     }
   },
   {
@@ -115,17 +116,20 @@ export const mockListings: Listing[] = [
     category: 'defi',
     name: 'Marinade',
     description: 'Liquid staking protocol for Solana',
+    url: 'https://marinade.finance',
     tags: ['LIQUID STAKING', 'YIELD'],
     status: ListingStatus.LISTED,
-    createdAt: randomDate(),
-    upvotes: 800,
-    comments: { count: 35 },
+    createdAt: '2023-03-20T00:00:00Z',
+    updatedAt: '2024-03-10T00:00:00Z',
+    lastApprovedAt: '2024-03-10T00:00:00Z',
+    upvotes: 18000,
+    comments: { count: 1200 },
     makers: getRandomMakers(2),
     submitter: mockCurators[1],
     curators: getRandomCurators(3),
     activity: {
-      upvotes30d: 180,
-      comments30d: 12
+      upvotes30d: 2500,
+      comments30d: 180
     }
   },
   {
@@ -134,17 +138,20 @@ export const mockListings: Listing[] = [
     category: 'defi',
     name: 'Drift Protocol',
     description: 'Decentralized perpetual exchange',
+    url: 'https://drift.trade',
     tags: ['PERPS DEX', 'LEVERAGE'],
     status: ListingStatus.LISTED,
-    createdAt: randomDate(),
-    upvotes: 750,
-    comments: { count: 40 },
+    createdAt: '2024-02-01T00:00:00Z',
+    updatedAt: '2024-03-18T00:00:00Z',
+    lastApprovedAt: '2024-03-18T00:00:00Z',
+    upvotes: 2000,
+    comments: { count: 150 },
     makers: getRandomMakers(4),
     submitter: mockCurators[2],
     curators: getRandomCurators(3),
     activity: {
-      upvotes30d: 160,
-      comments30d: 15
+      upvotes30d: 1800,
+      comments30d: 140
     }
   },
   
@@ -155,17 +162,20 @@ export const mockListings: Listing[] = [
     category: 'nft',
     name: 'Tensor',
     description: 'Advanced NFT trading platform',
+    url: 'https://tensor.trade',
     tags: ['NFT TRADING', 'ANALYTICS'],
     status: ListingStatus.LISTED,
-    createdAt: randomDate(),
-    upvotes: 900,
-    comments: { count: 45 },
+    createdAt: '2024-03-01T00:00:00Z',
+    updatedAt: '2024-03-20T00:00:00Z',
+    lastApprovedAt: '2024-03-20T00:00:00Z',
+    upvotes: 1500,
+    comments: { count: 120 },
     makers: getRandomMakers(3),
     submitter: mockCurators[3],
     curators: getRandomCurators(4),
     activity: {
-      upvotes30d: 200,
-      comments30d: 20
+      upvotes30d: 1500,
+      comments30d: 120
     }
   },
   {
@@ -174,17 +184,20 @@ export const mockListings: Listing[] = [
     category: 'nft',
     name: 'Magic Eden',
     description: 'Leading NFT marketplace',
+    url: 'https://magiceden.io',
     tags: ['NFT MARKETPLACE', 'LAUNCHPAD'],
     status: ListingStatus.LISTED,
-    createdAt: randomDate(),
-    upvotes: 850,
-    comments: { count: 42 },
+    createdAt: '2023-06-15T00:00:00Z',
+    updatedAt: '2024-03-12T00:00:00Z',
+    lastApprovedAt: '2024-03-12T00:00:00Z',
+    upvotes: 30000,
+    comments: { count: 2500 },
     makers: getRandomMakers(3),
     submitter: mockCurators[4],
     curators: getRandomCurators(3),
     activity: {
-      upvotes30d: 190,
-      comments30d: 18
+      upvotes30d: 300,
+      comments30d: 25
     }
   },
 
@@ -195,6 +208,7 @@ export const mockListings: Listing[] = [
     category: 'gaming',
     name: 'Genopets',
     description: 'Move-to-earn gaming platform',
+    url: 'https://genopets.me',
     tags: ['MOVE2EARN', 'RPG'],
     status: ListingStatus.LISTED,
     createdAt: randomDate(),
@@ -216,6 +230,7 @@ export const mockListings: Listing[] = [
     category: 'social',
     name: 'Dialect',
     description: 'Web3 messaging protocol',
+    url: 'https://dialect.to',
     tags: ['MESSAGING', 'NOTIFICATIONS'],
     status: ListingStatus.LISTED,
     createdAt: randomDate(),
@@ -237,17 +252,20 @@ export const mockListings: Listing[] = [
     category: 'meme',
     name: 'BONK',
     description: 'Solana\'s first viral meme token',
+    url: 'https://bonkcoin.com',
     tags: ['MEME', 'COMMUNITY'],
     status: ListingStatus.LISTED,
-    createdAt: randomDate(),
-    upvotes: 1500,
-    comments: { count: 75 },
+    createdAt: '2023-12-25T00:00:00Z',
+    updatedAt: '2024-03-19T00:00:00Z',
+    lastApprovedAt: '2024-03-19T00:00:00Z',
+    upvotes: 15000,
+    comments: { count: 1200 },
     makers: getRandomMakers(2),
     submitter: mockCurators[7],
     curators: getRandomCurators(4),
     activity: {
-      upvotes30d: 400,
-      comments30d: 25
+      upvotes30d: 3500,
+      comments30d: 280
     }
   },
   {
@@ -256,17 +274,20 @@ export const mockListings: Listing[] = [
     category: 'infrastructure',
     name: 'Jito',
     description: 'MEV infrastructure token',
+    url: 'https://jito.network',
     tags: ['MEV', 'INFRASTRUCTURE'],
     status: ListingStatus.LISTED,
-    createdAt: randomDate(),
-    upvotes: 1200,
-    comments: { count: 60 },
+    createdAt: '2024-01-10T00:00:00Z',
+    updatedAt: '2024-03-17T00:00:00Z',
+    lastApprovedAt: '2024-03-17T00:00:00Z',
+    upvotes: 8000,
+    comments: { count: 600 },
     makers: getRandomMakers(3),
     submitter: mockCurators[8],
     curators: getRandomCurators(3),
     activity: {
-      upvotes30d: 300,
-      comments30d: 20
+      upvotes30d: 2800,
+      comments30d: 220
     }
   },
   {
@@ -275,17 +296,20 @@ export const mockListings: Listing[] = [
     category: 'infrastructure',
     name: 'Pyth',
     description: 'Oracle network token',
+    url: 'https://pyth.network',
     tags: ['ORACLE', 'INFRASTRUCTURE'],
     status: ListingStatus.LISTED,
-    createdAt: randomDate(),
-    upvotes: 1100,
-    comments: { count: 55 },
+    createdAt: '2023-08-15T00:00:00Z',
+    updatedAt: '2024-03-14T00:00:00Z',
+    lastApprovedAt: '2024-03-14T00:00:00Z',
+    upvotes: 20000,
+    comments: { count: 1500 },
     makers: getRandomMakers(3),
     submitter: mockCurators[9],
     curators: getRandomCurators(3),
     activity: {
-      upvotes30d: 280,
-      comments30d: 18
+      upvotes30d: 400,
+      comments30d: 35
     }
   },
   {
@@ -294,17 +318,20 @@ export const mockListings: Listing[] = [
     category: 'defi-token',
     name: 'Orca',
     description: 'DEX governance token',
+    url: 'https://orca.so',
     tags: ['DEX', 'GOVERNANCE'],
     status: ListingStatus.LISTED,
-    createdAt: randomDate(),
-    upvotes: 1000,
-    comments: { count: 50 },
+    createdAt: '2023-05-20T00:00:00Z',
+    updatedAt: '2024-03-16T00:00:00Z',
+    lastApprovedAt: '2024-03-16T00:00:00Z',
+    upvotes: 25000,
+    comments: { count: 1800 },
     makers: getRandomMakers(3),
     submitter: mockCurators[10],
     curators: getRandomCurators(3),
     activity: {
-      upvotes30d: 250,
-      comments30d: 15
+      upvotes30d: 300,
+      comments30d: 25
     }
   },
   {
@@ -313,17 +340,20 @@ export const mockListings: Listing[] = [
     category: 'infrastructure',
     name: 'Render',
     description: 'Decentralized GPU rendering network',
+    url: 'https://rendernetwork.com',
     tags: ['COMPUTE', 'INFRASTRUCTURE'],
     status: ListingStatus.LISTED,
-    createdAt: randomDate(),
-    upvotes: 900,
-    comments: { count: 45 },
+    createdAt: '2024-03-10T00:00:00Z',
+    updatedAt: '2024-03-21T00:00:00Z',
+    lastApprovedAt: '2024-03-21T00:00:00Z',
+    upvotes: 2000,
+    comments: { count: 180 },
     makers: getRandomMakers(3),
     submitter: mockCurators[11],
     curators: getRandomCurators(3),
     activity: {
-      upvotes30d: 220,
-      comments30d: 14
+      upvotes30d: 2000,
+      comments30d: 180
     }
   }
 ]; 

@@ -52,21 +52,23 @@ export const sortListings = (listings: Listing[], view: TableView): Listing[] =>
   switch (view) {
     case 'trending':
       return [...listings].sort((a, b) => {
-        const scoreA = (a.activity?.upvotes30d || 0) + (a.activity?.comments30d || 0);
-        const scoreB = (b.activity?.upvotes30d || 0) + (b.activity?.comments30d || 0);
-        return scoreB - scoreA;
+        // Only consider last 30 days activity for trending
+        const trendingScoreA = (a.activity?.upvotes30d || 0) + (a.activity?.comments30d || 0) * 2;
+        const trendingScoreB = (b.activity?.upvotes30d || 0) + (b.activity?.comments30d || 0) * 2;
+        return trendingScoreB - trendingScoreA;
       });
     
     case 'top':
       return [...listings].sort((a, b) => {
-        const scoreA = a.upvotes + (a.comments?.count || 0);
-        const scoreB = b.upvotes + (b.comments?.count || 0);
-        return scoreB - scoreA;
+        // Consider all-time stats for top
+        const allTimeScoreA = (a.upvotes || 0) + (a.comments?.count || 0) * 2;
+        const allTimeScoreB = (b.upvotes || 0) + (b.comments?.count || 0) * 2;
+        return allTimeScoreB - allTimeScoreA;
       });
     
     case 'new':
       return [...listings].sort((a, b) => 
-        new Date(b.lastApprovedAt).getTime() - new Date(a.lastApprovedAt).getTime()
+        new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
       );
   }
 };

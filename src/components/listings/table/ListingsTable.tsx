@@ -6,6 +6,7 @@ import SearchInput from './SearchInput';
 import CategorySelect from './CategorySelect';
 import { TableSkeleton } from './TableSkeleton';
 import AvatarGroup from '@/components/common/AvatarGroup';
+import Link from 'next/link';
 
 interface ListingsTableProps {
   type: ListingType;
@@ -141,92 +142,121 @@ function ListingCard({ listing, onFilterClick }: { listing: Listing; onFilterCli
     }
   };
 
-  return (
-    <div className="flex gap-6 p-3 hover:bg-gray-50 transition-colors items-center">
-      {/* Column 1: Logo */}
-      <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
-        {listing.logoUrl ? (
-          <img
-            src={listing.logoUrl}
-            alt={`${listing.name} logo`}
-            className="w-10 h-10 rounded-lg object-cover"
-          />
-        ) : (
-          <span className="text-xl font-semibold text-gray-500">
-            {firstLetter}
-          </span>
-        )}
-      </div>
+  const handleExternalLinkClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    if (listing.url) {
+      window.open(listing.url, '_blank', 'noopener,noreferrer');
+    }
+  };
 
-      {/* Column 2: Name, Description & Tags */}
-      <div className="flex-1 min-w-0 flex flex-col justify-center">
-        {/* Name */}
-        <div className="flex items-center gap-1.5">
-          <span className="font-medium text-gray-500">{listing.rank}.</span>
-          <h3 className="text-[15px] font-medium leading-5 truncate">
-            {listing.name}
-            {listing.url && (
-              <span className="ml-1 text-gray-400 font-normal">↗</span>
-            )}
-          </h3>
+  return (
+    <Link href={`/${listing.id}`} className="block">
+      <div className="flex gap-6 p-3 hover:bg-gray-50 transition-colors items-center cursor-pointer group">
+        {/* Column 1: Logo */}
+        <div className="flex-shrink-0 w-10 h-10 rounded-lg bg-gradient-to-br from-gray-100 to-gray-200 flex items-center justify-center">
+          {listing.logoUrl ? (
+            <img
+              src={listing.logoUrl}
+              alt={`${listing.name} logo`}
+              className="w-10 h-10 rounded-lg object-cover"
+            />
+          ) : (
+            <span className="text-xl font-semibold text-gray-500">
+              {firstLetter}
+            </span>
+          )}
         </div>
 
-        {/* Description */}
-        {listing.description && (
-          <p className="mt-0.5 text-gray-600 text-[13px] leading-4 truncate">
-            {listing.description}
-          </p>
-        )}
-
-        {/* Category & Tags */}
-        <div className="mt-2 flex items-center gap-2 text-[13px] overflow-hidden">
-          {/* Main Category */}
-          <button
-            onClick={() => onFilterClick(listing.category)}
-            className={`flex-shrink-0 px-2.5 py-1 rounded-full border font-medium transition-colors hover:opacity-80 ${getCategoryColor(listing.type, listing.category)}`}
-          >
-            {formatCategory(listing.category)}
-          </button>
-
-          {/* Tags */}
-          {listing.tags && listing.tags.length > 0 && (
-            <div className="flex items-center gap-1.5 overflow-hidden">
-              {listing.tags.map((tag, index) => (
-                <button
-                  key={index}
-                  onClick={() => onFilterClick(tag)}
-                  className="px-2 py-0.5 rounded-full bg-gray-100 text-gray-600 text-xs font-medium truncate hover:bg-gray-200 transition-colors"
+        {/* Column 2: Name, Description & Tags */}
+        <div className="flex-1 min-w-0 flex flex-col justify-center">
+          {/* Name and External Link */}
+          <div className="flex items-center gap-1.5">
+            <span className="font-medium text-gray-500">{listing.rank}.</span>
+            <div className="flex items-center min-w-0">
+              <h3 className="text-[15px] font-medium leading-5 truncate hover:text-blue-600 transition-colors">
+                {listing.name}
+              </h3>
+              {listing.url && (
+                <a
+                  href={listing.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  onClick={handleExternalLinkClick}
+                  className="flex-shrink-0 ml-1.5 text-gray-400 hover:text-gray-900 opacity-0 group-hover:opacity-100 transition-all"
+                  aria-label="Visit website"
                 >
-                  {formatTag(tag)}
-                </button>
-              ))}
+                  🔗
+                </a>
+              )}
+            </div>
+          </div>
+
+          {/* Description */}
+          {listing.description && (
+            <p className="mt-0.5 text-gray-600 text-[13px] leading-4 truncate">
+              {listing.description}
+            </p>
+          )}
+
+          {/* Category & Tags */}
+          <div className="mt-2 flex items-center gap-2 text-[13px] overflow-hidden">
+            {/* Main Category */}
+            <button
+              onClick={(e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                onFilterClick(listing.category);
+              }}
+              className={`flex-shrink-0 px-2.5 py-1 rounded-full border font-medium transition-all hover:opacity-80 hover:scale-[1.02] ${getCategoryColor(listing.type, listing.category)}`}
+            >
+              {formatCategory(listing.category)}
+            </button>
+
+            {/* Tags */}
+            {listing.tags && listing.tags.length > 0 && (
+              <div className="flex items-center gap-1.5 overflow-hidden">
+                {listing.tags.map((tag, index) => (
+                  <button
+                    key={index}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      onFilterClick(tag);
+                    }}
+                    className="px-2 py-0.5 rounded-full bg-gray-100 text-gray-600 text-xs font-medium truncate hover:bg-gray-200 transition-colors"
+                  >
+                    {formatTag(tag)}
+                  </button>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        {/* Column 3: Makers */}
+        <div className="flex-shrink-0">
+          {listing.makers && listing.makers.length > 0 && (
+            <div className="flex flex-col items-center gap-1">
+              <span className="text-xs font-medium text-gray-500">Makers</span>
+              <AvatarGroup
+                avatars={listing.makers.map(maker => ({
+                  name: maker.name,
+                  avatarUrl: maker.avatarUrl
+                }))}
+                limit={3}
+              />
             </div>
           )}
         </div>
-      </div>
 
-      {/* Column 3: Makers */}
-      <div className="flex-shrink-0">
-        {listing.makers && listing.makers.length > 0 && (
-          <div className="flex flex-col items-center gap-1">
-            <span className="text-xs font-medium text-gray-500">Makers</span>
-            <AvatarGroup
-              avatars={listing.makers.map(maker => ({
-                name: maker.name,
-                avatarUrl: maker.avatarUrl
-              }))}
-              limit={3}
-            />
-          </div>
-        )}
+        {/* Column 4: Stats */}
+        <div className="flex items-center gap-2 flex-shrink-0">
+          <StatButton icon="💬" count={listing.comments?.count || 0} />
+          <StatButton icon="👍" count={listing.upvotes} />
+        </div>
       </div>
-
-      {/* Column 4: Stats */}
-      <div className="flex items-center gap-2 flex-shrink-0">
-        <StatButton icon="💬" count={listing.comments?.count || 0} />
-        <StatButton icon="👍" count={listing.upvotes} />
-      </div>
-    </div>
+    </Link>
   );
 }
 
