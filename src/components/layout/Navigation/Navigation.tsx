@@ -6,12 +6,15 @@ import { useState, useEffect, useRef } from 'react';
 import { Menu, X, Search, ChevronDown } from 'lucide-react';
 import SearchBar from './SearchBar/SearchBar';
 import WalletButton from '@/components/blockchain/WalletButton';
+import { categories } from '@/data/mock-data';
 
 export default function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
-  const [isCategoriesOpen, setIsCategoriesOpen] = useState(false);
+  const [isDappsOpen, setIsDappsOpen] = useState(false);
+  const [isTokensOpen, setIsTokensOpen] = useState(false);
   const [isMobileSearchOpen, setIsMobileSearchOpen] = useState(false);
-  const categoriesRef = useRef<HTMLDivElement>(null);
+  const dappsRef = useRef<HTMLDivElement>(null);
+  const tokensRef = useRef<HTMLDivElement>(null);
   const pathname = usePathname();
 
   // Close mobile menu when route changes
@@ -20,20 +23,12 @@ export default function Navigation() {
     setIsMobileSearchOpen(false);
   }, [pathname]);
 
-  const categories = [
-    { href: '/category/defi', label: 'DeFi' },
-    { href: '/category/nft', label: 'NFTs' },
-    { href: '/category/gaming', label: 'Gaming' },
-    { href: '/category/social', label: 'Social' },
-    { href: '/category/dao', label: 'DAOs' },
-  ];
+  const dappCategories = categories.filter(cat => cat.type === 'dapp');
+  const tokenCategories = categories.filter(cat => cat.type === 'token');
 
-  const navLinks = [
-    { href: '/explore', label: 'Discover' },
-    { href: '/submit', label: 'Submit' },
-  ];
+  const isActiveLink = (href: string) => pathname === href || pathname.startsWith(href + '/');
 
-  const isActiveLink = (href: string) => pathname === href;
+  const getCategoryUrl = (type: string, category: string) => `/${type}s/${category}`;
 
   return (
     <nav className="relative">
@@ -50,38 +45,81 @@ export default function Navigation() {
 
         {/* Desktop Navigation */}
         <div className="hidden md:flex items-center gap-6">
-          <Link
-            href="/explore"
-            className={`transition-colors ${
-              isActiveLink('/explore')
-                ? 'text-blue-600 font-medium'
-                : 'text-gray-600 hover:text-gray-900'
-            }`}
-          >
-            Discover
-          </Link>
-
-          {/* Categories Dropdown */}
+          {/* Dapps Dropdown */}
           <div 
-            ref={categoriesRef}
+            ref={dappsRef}
             className="relative"
-            onMouseEnter={() => setIsCategoriesOpen(true)}
-            onMouseLeave={() => setIsCategoriesOpen(false)}
+            onMouseEnter={() => setIsDappsOpen(true)}
+            onMouseLeave={() => setIsDappsOpen(false)}
           >
             <button
-              className="flex items-center gap-1 px-3 py-2 text-gray-600 hover:text-gray-900 transition-colors"
+              className={`flex items-center gap-1 px-3 py-2 transition-colors ${
+                isActiveLink('/dapps')
+                  ? 'text-blue-600 font-medium'
+                  : 'text-gray-600 hover:text-gray-900'
+              }`}
             >
-              Categories
-              <ChevronDown className={`w-4 h-4 transition-transform ${isCategoriesOpen ? 'rotate-180' : ''}`} />
+              Dapps
+              <ChevronDown className={`w-4 h-4 transition-transform ${isDappsOpen ? 'rotate-180' : ''}`} />
             </button>
-            {isCategoriesOpen && (
-              <div className="absolute top-full left-1/2 -translate-x-1/2 w-48 bg-white rounded-lg shadow-lg border border-gray-200 py-2 z-50">
-                {categories.map((category) => (
+            {isDappsOpen && (
+              <div className="absolute top-full left-0 w-56 bg-white rounded-lg shadow-lg border border-gray-200 p-2 space-y-1">
+                <Link
+                  href="/dapps"
+                  className="block px-3 py-2 text-sm rounded-md text-gray-600 hover:bg-gray-50"
+                >
+                  All Dapps
+                </Link>
+                <div className="h-px bg-gray-200 my-2" />
+                {dappCategories.map((category) => (
                   <Link
-                    key={category.href}
-                    href={category.href}
-                    className={`block px-4 py-2 text-sm ${
-                      isActiveLink(category.href)
+                    key={category.id}
+                    href={getCategoryUrl('dapp', category.id)}
+                    className={`block px-3 py-2 text-sm rounded-md ${
+                      isActiveLink(getCategoryUrl('dapp', category.id))
+                        ? 'text-blue-600 bg-blue-50'
+                        : 'text-gray-600 hover:bg-gray-50'
+                    }`}
+                  >
+                    {category.label}
+                  </Link>
+                ))}
+              </div>
+            )}
+          </div>
+
+          {/* Tokens Dropdown */}
+          <div 
+            ref={tokensRef}
+            className="relative"
+            onMouseEnter={() => setIsTokensOpen(true)}
+            onMouseLeave={() => setIsTokensOpen(false)}
+          >
+            <button
+              className={`flex items-center gap-1 px-3 py-2 transition-colors ${
+                isActiveLink('/tokens')
+                  ? 'text-blue-600 font-medium'
+                  : 'text-gray-600 hover:text-gray-900'
+              }`}
+            >
+              Tokens
+              <ChevronDown className={`w-4 h-4 transition-transform ${isTokensOpen ? 'rotate-180' : ''}`} />
+            </button>
+            {isTokensOpen && (
+              <div className="absolute top-full left-0 w-56 bg-white rounded-lg shadow-lg border border-gray-200 p-2 space-y-1">
+                <Link
+                  href="/tokens"
+                  className="block px-3 py-2 text-sm rounded-md text-gray-600 hover:bg-gray-50"
+                >
+                  All Tokens
+                </Link>
+                <div className="h-px bg-gray-200 my-2" />
+                {tokenCategories.map((category) => (
+                  <Link
+                    key={category.id}
+                    href={getCategoryUrl('token', category.id)}
+                    className={`block px-3 py-2 text-sm rounded-md ${
+                      isActiveLink(getCategoryUrl('token', category.id))
                         ? 'text-blue-600 bg-blue-50'
                         : 'text-gray-600 hover:bg-gray-50'
                     }`}
@@ -161,16 +199,19 @@ export default function Navigation() {
         }`}
       >
         <div className="p-6 space-y-6 pt-20">
-          {/* Categories Section */}
+          {/* Dapps Section */}
           <div className="space-y-2">
-            <h3 className="text-sm font-semibold text-gray-400 uppercase">Categories</h3>
+            <div className="flex items-center justify-between">
+              <h3 className="text-sm font-semibold text-gray-400 uppercase">Dapps</h3>
+              <Link href="/dapps" className="text-xs text-blue-600 hover:text-blue-700">View All</Link>
+            </div>
             <div className="space-y-1">
-              {categories.map((category) => (
+              {dappCategories.map((category) => (
                 <Link
-                  key={category.href}
-                  href={category.href}
-                  className={`block py-2 ${
-                    isActiveLink(category.href)
+                  key={category.id}
+                  href={getCategoryUrl('dapp', category.id)}
+                  className={`block py-2 pl-3 text-sm ${
+                    isActiveLink(getCategoryUrl('dapp', category.id))
                       ? 'text-blue-600 font-medium'
                       : 'text-gray-600 hover:text-gray-900'
                   }`}
@@ -181,24 +222,41 @@ export default function Navigation() {
             </div>
           </div>
 
-          {/* Navigation Links */}
+          {/* Tokens Section */}
           <div className="space-y-2">
-            <h3 className="text-sm font-semibold text-gray-400 uppercase">Navigation</h3>
+            <div className="flex items-center justify-between">
+              <h3 className="text-sm font-semibold text-gray-400 uppercase">Tokens</h3>
+              <Link href="/tokens" className="text-xs text-blue-600 hover:text-blue-700">View All</Link>
+            </div>
             <div className="space-y-1">
-              {navLinks.map((link) => (
+              {tokenCategories.map((category) => (
                 <Link
-                  key={link.href}
-                  href={link.href}
-                  className={`block py-2 ${
-                    isActiveLink(link.href)
+                  key={category.id}
+                  href={getCategoryUrl('token', category.id)}
+                  className={`block py-2 pl-3 text-sm ${
+                    isActiveLink(getCategoryUrl('token', category.id))
                       ? 'text-blue-600 font-medium'
                       : 'text-gray-600 hover:text-gray-900'
                   }`}
                 >
-                  {link.label}
+                  {category.label}
                 </Link>
               ))}
             </div>
+          </div>
+
+          {/* Submit Link */}
+          <div className="pt-4">
+            <Link
+              href="/submit"
+              className={`block py-2 text-lg ${
+                isActiveLink('/submit')
+                  ? 'text-blue-600 font-medium'
+                  : 'text-gray-600 hover:text-gray-900'
+              }`}
+            >
+              Submit
+            </Link>
           </div>
 
           {/* Wallet Button */}
