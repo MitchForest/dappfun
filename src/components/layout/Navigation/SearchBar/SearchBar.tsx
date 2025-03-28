@@ -89,18 +89,24 @@ export default function SearchBar() {
       <form onSubmit={handleSearch} className="flex-1">
         <div className="relative">
           <div className="absolute inset-y-0 left-0 flex items-center pl-3 pointer-events-none">
-            <Search className={`w-5 h-5 ${isSearching ? 'text-blue-500 animate-pulse' : 'text-gray-400'}`} />
+            <Search className={`w-4 h-4 ${isSearching ? 'text-gray-900' : 'text-gray-400'}`} />
           </div>
           <input
             type="search"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
             onKeyDown={handleKeyDown}
-            className="w-full p-2.5 pl-10 pr-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-blue-500 focus:border-blue-500 transition-all"
+            className="w-full py-2.5 pl-10 pr-16 text-[15px] text-gray-900 rounded-lg bg-gray-50/80 border border-gray-200/60 focus:ring-1 focus:ring-gray-200 focus:border-gray-200 transition-all"
             placeholder="Search dapps..."
             aria-label="Search"
             aria-expanded={results.length > 0}
           />
+          <div className="absolute inset-y-0 right-0 flex items-center pr-3 pointer-events-none">
+            <kbd className="hidden sm:inline-flex items-center gap-0.5 px-1.5 py-0.5 text-[11px] font-medium text-gray-400 bg-gray-100/80 border border-gray-200 rounded">
+              <span className="text-[10px]">⌘</span>
+              <span>K</span>
+            </kbd>
+          </div>
           {searchQuery && (
             <button
               type="button"
@@ -108,10 +114,10 @@ export default function SearchBar() {
                 setSearchQuery('');
                 setResults([]);
               }}
-              className="absolute inset-y-0 right-0 flex items-center pr-3 text-gray-400 hover:text-gray-600"
+              className="absolute inset-y-0 right-12 flex items-center pr-3 text-gray-400 hover:text-gray-600"
               aria-label="Clear search"
             >
-              <X className="w-5 h-5" />
+              <X className="w-4 h-4" />
             </button>
           )}
         </div>
@@ -119,13 +125,13 @@ export default function SearchBar() {
 
       {/* Search Results Dropdown */}
       {results.length > 0 && (
-        <div className="absolute mt-2 w-full bg-white rounded-lg shadow-lg border border-gray-200 max-h-96 overflow-auto z-50">
+        <div className="absolute mt-1 w-full bg-white rounded-lg shadow-lg border border-gray-200/60 max-h-96 overflow-auto z-50">
           {results.map((result, index) => (
             <button
               key={result.id}
               onClick={() => handleResultClick(result.id)}
               className={`w-full text-left px-4 py-3 hover:bg-gray-50 transition-colors ${
-                index === selectedIndex ? 'bg-blue-50' : ''
+                index === selectedIndex ? 'bg-gray-50' : ''
               }`}
               onMouseEnter={() => setSelectedIndex(index)}
             >

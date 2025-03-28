@@ -32,9 +32,9 @@ export default function Navigation() {
 
   return (
     <nav className="relative">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between gap-4">
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-[65px] flex items-center justify-between gap-6">
         {/* Logo */}
-        <Link href="/" className="text-xl font-bold flex-shrink-0 z-10">
+        <Link href="/" className="text-xl font-bold flex-shrink-0 z-10 text-gray-800">
           DappFun
         </Link>
 
@@ -44,7 +44,7 @@ export default function Navigation() {
         </div>
 
         {/* Desktop Navigation */}
-        <div className="hidden md:flex items-center gap-6">
+        <div className="hidden md:flex items-center gap-8">
           {/* Dapps Dropdown */}
           <div 
             ref={dappsRef}
@@ -53,31 +53,31 @@ export default function Navigation() {
             onMouseLeave={() => setIsDappsOpen(false)}
           >
             <button
-              className={`flex items-center gap-1 px-3 py-2 transition-colors ${
+              className={`flex items-center gap-1.5 py-2 transition-colors text-[15px] ${
                 isActiveLink('/dapps')
-                  ? 'text-blue-600 font-medium'
-                  : 'text-gray-600 hover:text-gray-900'
+                  ? 'text-gray-900 font-medium'
+                  : 'text-gray-600 hover:text-gray-800'
               }`}
             >
               Dapps
-              <ChevronDown className={`w-4 h-4 transition-transform ${isDappsOpen ? 'rotate-180' : ''}`} />
+              <ChevronDown className={`w-3.5 h-3.5 transition-transform ${isDappsOpen ? 'rotate-180' : ''}`} />
             </button>
             {isDappsOpen && (
-              <div className="absolute top-full left-0 w-56 bg-white rounded-lg shadow-lg border border-gray-200 p-2 space-y-1">
+              <div className="absolute top-full left-0 w-56 bg-white rounded-lg shadow-lg border border-gray-200/60 p-2 space-y-1 z-50">
                 <Link
                   href="/dapps"
-                  className="block px-3 py-2 text-sm rounded-md text-gray-600 hover:bg-gray-50"
+                  className="block px-3 py-2 text-[14px] rounded-md text-gray-600 hover:bg-gray-50"
                 >
                   All Dapps
                 </Link>
-                <div className="h-px bg-gray-200 my-2" />
+                <div className="h-px bg-gray-100 my-2" />
                 {dappCategories.map((category) => (
                   <Link
                     key={category.id}
                     href={getCategoryUrl('dapp', category.id)}
-                    className={`block px-3 py-2 text-sm rounded-md ${
+                    className={`block px-3 py-2 text-[14px] rounded-md ${
                       isActiveLink(getCategoryUrl('dapp', category.id))
-                        ? 'text-blue-600 bg-blue-50'
+                        ? 'text-blue-600 bg-blue-50/60'
                         : 'text-gray-600 hover:bg-gray-50'
                     }`}
                   >
@@ -96,32 +96,32 @@ export default function Navigation() {
             onMouseLeave={() => setIsTokensOpen(false)}
           >
             <button
-              className={`flex items-center gap-1 px-3 py-2 transition-colors ${
+              className={`flex items-center gap-1.5 py-2 transition-colors text-[15px] ${
                 isActiveLink('/tokens')
-                  ? 'text-blue-600 font-medium'
-                  : 'text-gray-600 hover:text-gray-900'
+                  ? 'text-gray-900 font-medium'
+                  : 'text-gray-600 hover:text-gray-800'
               }`}
             >
               Tokens
-              <ChevronDown className={`w-4 h-4 transition-transform ${isTokensOpen ? 'rotate-180' : ''}`} />
+              <ChevronDown className={`w-3.5 h-3.5 transition-transform ${isTokensOpen ? 'rotate-180' : ''}`} />
             </button>
             {isTokensOpen && (
-              <div className="absolute top-full left-0 w-56 bg-white rounded-lg shadow-lg border border-gray-200 p-2 space-y-1">
+              <div className="absolute top-full left-0 w-56 bg-white rounded-lg shadow-lg border border-gray-200/60 p-2 space-y-1 z-50">
                 <Link
                   href="/tokens"
-                  className="block px-3 py-2 text-sm rounded-md text-gray-600 hover:bg-gray-50"
+                  className="block px-3 py-2 text-[14px] rounded-md text-gray-600 hover:bg-gray-50"
                 >
                   All Tokens
                 </Link>
-                <div className="h-px bg-gray-200 my-2" />
+                <div className="h-px bg-gray-100 my-2" />
                 {tokenCategories.map((category) => (
                   <Link
                     key={category.id}
                     href={getCategoryUrl('token', category.id)}
-                    className={`block px-3 py-2 text-sm rounded-md ${
+                    className={`block py-2 pl-3 text-[14px] ${
                       isActiveLink(getCategoryUrl('token', category.id))
-                        ? 'text-blue-600 bg-blue-50'
-                        : 'text-gray-600 hover:bg-gray-50'
+                        ? 'text-gray-900 font-medium'
+                        : 'text-gray-600 hover:text-gray-800'
                     }`}
                   >
                     {category.label}
@@ -133,10 +133,10 @@ export default function Navigation() {
 
           <Link
             href="/submit"
-            className={`transition-colors ${
+            className={`transition-colors text-[15px] ${
               isActiveLink('/submit')
-                ? 'text-blue-600 font-medium'
-                : 'text-gray-600 hover:text-gray-900'
+                ? 'text-gray-900 font-medium'
+                : 'text-gray-600 hover:text-gray-800'
             }`}
           >
             Submit
@@ -194,7 +194,7 @@ export default function Navigation() {
 
       {/* Mobile Menu Panel */}
       <div
-        className={`absolute top-0 right-0 w-full max-w-sm bg-white h-screen shadow-lg transition-transform duration-200 ease-in-out transform md:hidden ${
+        className={`fixed top-0 right-0 w-full max-w-sm bg-white h-screen shadow-lg transition-transform duration-200 ease-in-out transform md:hidden z-50 ${
           isMenuOpen ? 'translate-x-0' : 'translate-x-full'
         }`}
       >
@@ -233,10 +233,10 @@ export default function Navigation() {
                 <Link
                   key={category.id}
                   href={getCategoryUrl('token', category.id)}
-                  className={`block py-2 pl-3 text-sm ${
+                  className={`block py-2 pl-3 text-[14px] ${
                     isActiveLink(getCategoryUrl('token', category.id))
-                      ? 'text-blue-600 font-medium'
-                      : 'text-gray-600 hover:text-gray-900'
+                      ? 'text-gray-900 font-medium'
+                      : 'text-gray-600 hover:text-gray-800'
                   }`}
                 >
                   {category.label}
@@ -249,10 +249,10 @@ export default function Navigation() {
           <div className="pt-4">
             <Link
               href="/submit"
-              className={`block py-2 text-lg ${
+              className={`block py-2 text-[15px] ${
                 isActiveLink('/submit')
-                  ? 'text-blue-600 font-medium'
-                  : 'text-gray-600 hover:text-gray-900'
+                  ? 'text-gray-900 font-medium'
+                  : 'text-gray-600 hover:text-gray-800'
               }`}
             >
               Submit
@@ -267,4 +267,4 @@ export default function Navigation() {
       </div>
     </nav>
   );
-} 
+}

@@ -1,6 +1,6 @@
 export enum ListingType {
-  DAPP = 'DAPP',
-  TOKEN = 'TOKEN'
+  DAPP = 'dapp',
+  TOKEN = 'token'
 }
 
 export enum ListingStatus {
@@ -73,6 +73,7 @@ export interface ListingComments {
 export interface ListingMaker {
   name: string;
   role: string;
+  avatarUrl: string;
   links: {
     [key: string]: string;
   };
@@ -99,24 +100,54 @@ export interface Ecosystem {
   description?: string;
 }
 
+export interface CuratorAction {
+  userId: string;
+  userName: string;
+  action: 'submit' | 'edit' | 'challenge' | 'vote';
+  timestamp: string;
+  details?: any;
+}
+
+export interface ListingCurator {
+  id: string;
+  name: string;
+  role: 'submitter' | 'editor' | 'challenger' | 'voter';
+  avatarUrl: string;
+  actions: CuratorAction[];
+}
+
+export interface ListingActivity {
+  upvotes30d: number;
+  comments30d: number;
+  lastActivityAt: string;
+  trendingScore?: number;
+}
+
 export interface Listing {
   id: string;
   type: ListingType;
-  category: string;
   name: string;
-  description: string;
-  url: string;
-  logoUrl: string;
+  description?: string;
+  logoUrl?: string;
+  url?: string;
+  rank?: number;
+  category: string;
+  tags: string[];
   status: ListingStatus;
   createdAt: string;
-  updatedAt: string;
-  upvotes?: number;
-  ratings?: ListingRatings;
-  comments?: ListingComments;
-  metadata: ListingMetadata;
+  updatedAt?: string;
+  lastApprovedAt?: string;
+  upvotes: number;
   makers?: ListingMaker[];
-  editHistory?: ListingEditHistory[];
-  ecosystems?: Ecosystem[];
+  curators?: ListingCurator[];
+  submitter: ListingCurator;
+  comments?: {
+    count: number;
+  };
+  activity?: {
+    upvotes30d?: number;
+    comments30d?: number;
+  };
 }
 
 export type CreateListingInput = Omit<Listing, 'id' | 'createdAt' | 'updatedAt' | 'upvotes' | 'ratings' | 'comments' | 'editHistory'>;
@@ -138,4 +169,16 @@ export interface ListingFilters {
   sortDirection?: 'asc' | 'desc';
   limit?: number;
   offset?: number;
+}
+
+export type TableView = 'trending' | 'top' | 'new';
+
+export interface TableFilters {
+  search: string;
+  category?: string;
+  view: TableView;
+  sortBy: keyof Listing;
+  sortDirection: 'asc' | 'desc';
+  page: number;
+  perPage: number;
 } 
