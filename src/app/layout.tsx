@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "./globals.css";
 import WalletContextProvider from "@/components/blockchain/WalletProvider";
-import WalletButton from '@/components/blockchain/WalletButton'
-import Link from 'next/link'
+import Header from "@/components/layout/Header";
+import Footer from "@/components/layout/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -19,30 +19,13 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.className} min-h-screen flex flex-col`}>
         <WalletContextProvider>
-          <header className="border-b">
-            <nav className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-              <div className="flex items-center">
-                <Link href="/" className="text-xl font-bold">
-                  DappFun
-                </Link>
-              </div>
-              <WalletButton />
-            </nav>
-          </header>
-
-          <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <Header />
+          <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 flex-grow">
             {children}
           </main>
-
-          <footer className="border-t mt-auto">
-            <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
-              <div className="text-sm text-gray-500">
-                Built on Solana
-              </div>
-            </div>
-          </footer>
+          <Footer />
         </WalletContextProvider>
       </body>
     </html>
