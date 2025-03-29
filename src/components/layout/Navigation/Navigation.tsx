@@ -28,7 +28,11 @@ export default function Navigation() {
 
   const isActiveLink = (href: string) => pathname === href || pathname.startsWith(href + '/');
 
-  const getCategoryUrl = (type: string, category: string) => `/${type}s/${category}`;
+  const getCategoryUrl = (type: string, category: string) => {
+    const url = `/${type}s/${category}`;
+    console.log(`Generated URL for ${type} category ${category}: ${url}`);
+    return url;
+  };
 
   return (
     <nav className="relative">
