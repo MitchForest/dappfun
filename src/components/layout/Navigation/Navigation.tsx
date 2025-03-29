@@ -132,6 +132,17 @@ export default function Navigation() {
           </div>
 
           <Link
+            href="/registry"
+            className={`transition-colors text-[15px] ${
+              isActiveLink('/registry')
+                ? 'text-gray-900 font-medium'
+                : 'text-gray-600 hover:text-gray-800'
+            }`}
+          >
+            Registry
+          </Link>
+
+          <Link
             href="/submit"
             className={`transition-colors text-[15px] ${
               isActiveLink('/submit')
@@ -243,6 +254,20 @@ export default function Navigation() {
                 </Link>
               ))}
             </div>
+          </div>
+
+          {/* Registry Link */}
+          <div className="pt-4">
+            <Link
+              href="/registry"
+              className={`block py-2 text-[15px] ${
+                isActiveLink('/registry')
+                  ? 'text-gray-900 font-medium'
+                  : 'text-gray-600 hover:text-gray-800'
+              }`}
+            >
+              Registry
+            </Link>
           </div>
 
           {/* Submit Link */}

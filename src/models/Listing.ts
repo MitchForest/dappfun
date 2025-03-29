@@ -3,6 +3,9 @@ export enum ListingType {
   TOKEN = 'token'
 }
 
+export type TableView = 'trending' | 'top' | 'new';
+export type TCRStatus = 'challengePeriod' | 'votingPeriod' | 'approved' | 'rejected';
+
 export enum ListingStatus {
   LISTED = 'LISTED',
   PENDING = 'PENDING',
@@ -70,91 +73,83 @@ export interface ListingComments {
   items: any[]; // Replace with proper Comment type when needed
 }
 
-export interface ListingMaker {
+export interface User {
   name: string;
-  role: string;
-  avatarUrl: string;
-  links: {
-    [key: string]: string;
+  avatar: string;
+  profileUrl: string;
+}
+
+export interface EditedField {
+  old: string;
+  new: string;
+}
+
+export interface EditedFields {
+  name?: EditedField;
+  description?: EditedField;
+  category?: EditedField;
+  tags?: {
+    removed: string[];
+    added: string[];
   };
-}
-
-export interface ListingEditHistory {
-  timestamp: string;
-  editor: string;
-  changes: string[];
-}
-
-export interface ProjectRelationship {
-  listingId: string;           // ID of the related listing
-  type: RelationType;          // Type of relationship
-  description?: string;        // Optional description of relationship
-  isVerified?: boolean;        // Whether both parties verified the relationship
-  addedAt: number;            // When the relationship was added
-  verifiedAt?: number;        // When the relationship was verified
-}
-
-export interface Ecosystem {
-  id: string;
-  name: string;
-  description?: string;
-}
-
-export interface CuratorAction {
-  userId: string;
-  userName: string;
-  action: 'submit' | 'edit' | 'challenge' | 'vote';
-  timestamp: string;
-  details?: any;
-}
-
-export interface ListingCurator {
-  id: string;
-  name: string;
-  role: 'submitter' | 'editor' | 'challenger' | 'voter';
-  avatarUrl: string;
-  actions: CuratorAction[];
-}
-
-export interface ListingActivity {
-  upvotes30d: number;
-  comments30d: number;
-  lastActivityAt: string;
-  trendingScore?: number;
+  logo?: EditedField;
+  makers?: {
+    removed: User[];
+    added: User[];
+  };
 }
 
 export interface Listing {
   id: string;
-  type: ListingType;
   name: string;
-  description?: string;
-  logoUrl?: string;
-  url?: string;
-  rank?: number;
+  description: string;
+  type: ListingType;
   category: string;
   tags: string[];
-  status: ListingStatus;
+  logo: string;
+  makers: User[];
+  submitter: User;
+  submittedAt: string;
+  url: string;
+  status?: ListingStatus;
+  
+  // Activity and engagement fields
   createdAt: string;
-  updatedAt?: string;
+  updatedAt: string;
   lastApprovedAt?: string;
   upvotes: number;
-  makers?: ListingMaker[];
-  curators?: ListingCurator[];
-  submitter: ListingCurator;
-  comments?: {
-    count: number;
+  comments: { count: number };
+  activity: {
+    upvotes30d: number;
+    comments30d: number;
   };
-  activity?: {
-    upvotes30d?: number;
-    comments30d?: number;
+  curators?: User[];
+  
+  // TCR-specific fields
+  tcrStatus?: TCRStatus;
+  tcrEndTime?: string;
+  tcrChallenger?: User;
+  tcrVotes?: {
+    approve: number;
+    reject: number;
   };
+  
+  // For edited listings
+  isEdit?: boolean;
+  editedFields?: EditedFields;
+  originalListing?: Omit<Listing, 'isEdit' | 'editedFields' | 'originalListing'>;
 }
 
-export type CreateListingInput = Omit<Listing, 'id' | 'createdAt' | 'updatedAt' | 'upvotes' | 'ratings' | 'comments' | 'editHistory'>;
+export interface TableFilters {
+  search: string;
+  category?: string;
+  view: TableView;
+  sortBy: keyof Listing;
+  sortDirection: 'asc' | 'desc';
+  page: number;
+  perPage: number;
+}
 
-export type UpdateListingInput = Partial<CreateListingInput>;
-
-// Type for listing search/filter parameters
 export interface ListingFilters {
   type?: ListingType;
   category?: string;
@@ -171,14 +166,32 @@ export interface ListingFilters {
   offset?: number;
 }
 
-export type TableView = 'trending' | 'top' | 'new';
+export type CreateListingInput = Omit<Listing, 'id' | 'createdAt' | 'updatedAt' | 'upvotes' | 'ratings' | 'comments' | 'editHistory'>;
+export type UpdateListingInput = Partial<CreateListingInput>;
 
-export interface TableFilters {
-  search: string;
-  category?: string;
-  view: TableView;
-  sortBy: keyof Listing;
-  sortDirection: 'asc' | 'desc';
-  page: number;
-  perPage: number;
+export interface TCRListing extends Listing {
+  tcrStatus: TCRStatus;
+  challengePeriodEnds?: string;
+  votingPeriodEnds?: string;
+  challenger?: User;
+  challengedAt?: string;
+  challengeReason?: string;
+  proposedChanges: {
+    name: boolean;
+    description: boolean;
+    category: boolean;
+    logo: boolean;
+  };
+  stakeAmount: number;
+  votes?: {
+    for: number;
+    against: number;
+  };
+  submissionType: SubmissionType;
+}
+
+export enum SubmissionType {
+  NEW = 'NEW',
+  EDIT = 'EDIT',
+  DELETE = 'DELETE'
 } 

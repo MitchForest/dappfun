@@ -7,6 +7,21 @@ import CategorySelect from './CategorySelect';
 import { TableSkeleton } from './TableSkeleton';
 import AvatarGroup from '@/components/common/AvatarGroup';
 import Link from 'next/link';
+import ListingActions from './ListingActions';
+
+// Helper function to format time remaining
+function formatTimeLeft(endTime: string): string {
+  const end = new Date(endTime).getTime();
+  const now = new Date().getTime();
+  const diff = end - now;
+
+  const hours = Math.floor(diff / (1000 * 60 * 60));
+  if (hours < 1) {
+    const minutes = Math.floor(diff / (1000 * 60));
+    return `${minutes}m left`;
+  }
+  return `${hours}h left`;
+}
 
 interface ListingsTableProps {
   type: ListingType;
@@ -289,9 +304,11 @@ export default function ListingsTable({
   return (
     <div className="space-y-4">
       {/* Header */}
-      <h2 className="text-2xl font-bold">
-        {view.charAt(0).toUpperCase() + view.slice(1)} {typeLabel} on Solana
-      </h2>
+      <div className="flex items-center justify-between">
+        <h2 className="text-2xl font-bold">
+          {view.charAt(0).toUpperCase() + view.slice(1)} {typeLabel} on Solana
+        </h2>
+      </div>
 
       {/* Controls Row */}
       <div className="flex flex-wrap items-center gap-3">
