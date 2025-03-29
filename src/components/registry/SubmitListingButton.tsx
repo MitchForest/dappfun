@@ -8,10 +8,9 @@ export default function SubmitListingButton({ className = '' }: SubmitListingBut
   return (
     <button
       onClick={() => {/* TODO: Open submit modal */}}
-      className={`bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors flex items-center gap-2 ${className}`}
+      className={`bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors px-4 py-2 ${className}`}
     >
-      Submit New Listing
-      <span className="text-sm text-blue-200">Stake: 50 $DAPP</span>
+      Submit Now
     </button>
   );
 } 

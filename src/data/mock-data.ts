@@ -1,6 +1,5 @@
 import { Category } from '@/types/category';
 import { Listing, ListingType, ListingStatus, TCRListing, User, TCRStatus } from '@/models/Listing';
-import { mockMakers, mockCurators } from './mock-users';
 
 // Predefined tags for consistent usage
 export const LISTING_TAGS = {
@@ -113,14 +112,103 @@ const randomDate = () => {
   return new Date(oneYearAgo + Math.random() * (now - oneYearAgo)).toISOString();
 };
 
+// Helper function to generate consistent avatar URL
+const getAvatarUrl = (name: string) => {
+  const seed = name.replace('.sol', '').toLowerCase();
+  return `https://api.dicebear.com/7.x/personas/svg?seed=${seed}`;
+};
+
+// Mock makers with consistent avatar generation
+export const mockMakers: User[] = [
+  {
+    name: 'maker1.sol',
+    avatar: getAvatarUrl('maker1.sol'),
+    profileUrl: '/profile/maker1'
+  },
+  {
+    name: 'maker2.sol',
+    avatar: getAvatarUrl('maker2.sol'),
+    profileUrl: '/profile/maker2'
+  },
+  {
+    name: 'maker3.sol',
+    avatar: getAvatarUrl('maker3.sol'),
+    profileUrl: '/profile/maker3'
+  },
+  {
+    name: 'maker4.sol',
+    avatar: getAvatarUrl('maker4.sol'),
+    profileUrl: '/profile/maker4'
+  },
+  {
+    name: 'maker5.sol',
+    avatar: getAvatarUrl('maker5.sol'),
+    profileUrl: '/profile/maker5'
+  }
+];
+
+// Mock curators with consistent avatar generation
+export const mockCurators: User[] = [
+  {
+    name: 'alice.sol',
+    avatar: getAvatarUrl('alice.sol'),
+    profileUrl: '/profile/alice'
+  },
+  {
+    name: 'bob.sol',
+    avatar: getAvatarUrl('bob.sol'),
+    profileUrl: '/profile/bob'
+  },
+  {
+    name: 'carol.sol',
+    avatar: getAvatarUrl('carol.sol'),
+    profileUrl: '/profile/carol'
+  },
+  {
+    name: 'dave.sol',
+    avatar: getAvatarUrl('dave.sol'),
+    profileUrl: '/profile/dave'
+  },
+  {
+    name: 'eve.sol',
+    avatar: getAvatarUrl('eve.sol'),
+    profileUrl: '/profile/eve'
+  },
+  {
+    name: 'frank.sol',
+    avatar: getAvatarUrl('frank.sol'),
+    profileUrl: '/profile/frank'
+  },
+  {
+    name: 'grace.sol',
+    avatar: getAvatarUrl('grace.sol'),
+    profileUrl: '/profile/grace'
+  },
+  {
+    name: 'henry.sol',
+    avatar: getAvatarUrl('henry.sol'),
+    profileUrl: '/profile/henry'
+  },
+  {
+    name: 'ian.sol',
+    avatar: getAvatarUrl('ian.sol'),
+    profileUrl: '/profile/ian'
+  },
+  {
+    name: 'julia.sol',
+    avatar: getAvatarUrl('julia.sol'),
+    profileUrl: '/profile/julia'
+  }
+];
+
 // Helper function to get random makers
-const getRandomMakers = (count: number) => {
+const getRandomMakers = (count: number): User[] => {
   const shuffled = [...mockMakers].sort(() => 0.5 - Math.random());
   return shuffled.slice(0, count);
 };
 
 // Helper function to get random curators
-const getRandomCurators = (count: number) => {
+const getRandomCurators = (count: number): User[] => {
   const shuffled = [...mockCurators].sort(() => 0.5 - Math.random());
   return shuffled.slice(0, count);
 };
@@ -455,306 +543,171 @@ export enum SubmissionType {
 // Mock TCR Listings
 export const mockTCRListings: TCRListing[] = [
   {
-    id: '1',
-    name: 'SolanaSwap',
-    description: 'A decentralized exchange on Solana',
+    id: 'solana-rpg',
+    name: 'Solana RPG',
+    description: 'Epic blockchain RPG with NFT characters and play-to-earn mechanics',
     type: ListingType.DAPP,
-    category: 'DeFi',
-    tags: ['DEX', 'AMM', 'Swap'],
-    logo: 'https://api.dicebear.com/7.x/shapes/svg?seed=SolanaSwap',
-    url: 'https://solanaswap.io',
-    status: ListingStatus.PENDING,
-    makers: [
-      {
-        name: 'alice.sol',
-        avatar: 'https://api.dicebear.com/7.x/personas/svg?seed=alice',
-        profileUrl: '/profile/alice'
-      }
-    ],
-    submitter: {
-      name: 'alice.sol',
-      avatar: 'https://api.dicebear.com/7.x/personas/svg?seed=alice',
-      profileUrl: '/profile/alice'
+    category: 'gaming',
+    url: 'https://solanarps.io',
+    logo: 'https://api.dicebear.com/7.x/shapes/svg?seed=solanarps',
+    tags: [LISTING_TAGS.GAMING, LISTING_TAGS.P2E, LISTING_TAGS.RPG],
+    submissionType: SubmissionType.NEW,
+    submittedAt: '2024-03-20T10:00:00Z',
+    submitter: mockCurators[0],
+    makers: getRandomMakers(3),
+    tcrStatus: 'votingPeriod',
+    tcrChallenger: mockCurators[1],
+    challengedAt: '2024-03-21T15:00:00Z',
+    challengeReason: 'Game mechanics are underdeveloped and lack proper documentation',
+    votes: {
+      for: 65,
+      against: 35
     },
-    submittedAt: '2024-03-15T10:00:00Z',
-    createdAt: '2024-03-15T10:00:00Z',
-    updatedAt: '2024-03-15T10:00:00Z',
-    upvotes: 120,
+    proposedChanges: defaultProposedChanges,
+    stakeAmount: 50,
+    createdAt: '2024-03-20T10:00:00Z',
+    updatedAt: '2024-03-21T15:00:00Z',
+    status: ListingStatus.PENDING,
     comments: { count: 5 },
     activity: {
-      upvotes30d: 50,
+      upvotes30d: 45,
       comments30d: 3
     },
-    tcrStatus: 'challengePeriod' as TCRStatus,
-    tcrEndTime: '2024-03-22T10:00:00Z',
-    stakeAmount: 50,
-    proposedChanges: defaultProposedChanges,
-    submissionType: SubmissionType.NEW
+    upvotes: 45
   },
   {
-    id: '2',
-    name: 'NFT Marketplace',
-    description: 'The premier NFT marketplace on Solana',
+    id: 'solana-messenger-edit',
+    name: 'Solana Messenger',
+    description: 'Decentralized messaging app with end-to-end encryption',
     type: ListingType.DAPP,
-    category: 'NFTs',
-    tags: ['NFT', 'Marketplace'],
-    logo: 'https://api.dicebear.com/7.x/shapes/svg?seed=NFTMarketplace',
-    url: 'https://nftmarket.io',
-    status: ListingStatus.PENDING,
-    makers: [
-      {
-        name: 'bob.sol',
-        avatar: 'https://api.dicebear.com/7.x/personas/svg?seed=bob',
-        profileUrl: '/profile/bob'
-      }
-    ],
-    submitter: {
-      name: 'bob.sol',
-      avatar: 'https://api.dicebear.com/7.x/personas/svg?seed=bob',
-      profileUrl: '/profile/bob'
-    },
-    submittedAt: '2024-03-14T10:00:00Z',
-    createdAt: '2024-03-14T10:00:00Z',
-    updatedAt: '2024-03-14T10:00:00Z',
-    upvotes: 80,
-    comments: { count: 3 },
-    activity: {
-      upvotes30d: 30,
-      comments30d: 2
-    },
-    tcrStatus: 'votingPeriod' as TCRStatus,
-    tcrEndTime: '2024-03-21T10:00:00Z',
-    stakeAmount: 50,
-    proposedChanges: {
-      name: false,
-      description: true,
-      category: false,
-      logo: true
-    },
+    category: 'social',
+    url: 'https://solanamessenger.com',
+    logo: 'https://api.dicebear.com/7.x/shapes/svg?seed=solanamessenger',
+    tags: [LISTING_TAGS.MESSAGING, LISTING_TAGS.SOCIAL],
     submissionType: SubmissionType.EDIT,
+    submittedAt: '2024-03-22T09:00:00Z',
+    submitter: mockCurators[2],
+    makers: getRandomMakers(4),
+    tcrStatus: 'rejected',
+    tcrChallenger: mockCurators[3],
+    challengedAt: '2024-03-22T14:00:00Z',
+    challengeReason: 'Proposed encryption changes have security vulnerabilities',
     votes: {
-      for: 300,
-      against: 700
+      for: 20,
+      against: 80
     },
-    challenger: {
-      name: 'dave.sol',
-      avatar: 'https://api.dicebear.com/7.x/personas/svg?seed=dave',
-      profileUrl: '/profile/dave'
-    },
-    challengeReason: 'Inaccurate project description and misleading logo'
-  },
-  {
-    id: '3',
-    name: 'Solana Yield',
-    description: 'Yield aggregator for Solana DeFi',
-    type: ListingType.DAPP,
-    category: 'DeFi',
-    tags: ['Yield', 'Farming'],
-    logo: 'https://api.dicebear.com/7.x/shapes/svg?seed=SolanaYield',
-    url: 'https://solanayield.io',
-    status: ListingStatus.LISTED,
-    makers: [
-      {
-        name: 'carol.sol',
-        avatar: 'https://api.dicebear.com/7.x/personas/svg?seed=carol',
-        profileUrl: '/profile/carol'
-      }
-    ],
-    submitter: {
-      name: 'carol.sol',
-      avatar: 'https://api.dicebear.com/7.x/personas/svg?seed=carol',
-      profileUrl: '/profile/carol'
-    },
-    submittedAt: '2024-03-13T10:00:00Z',
-    createdAt: '2024-03-13T10:00:00Z',
-    updatedAt: '2024-03-13T10:00:00Z',
-    upvotes: 150,
-    comments: { count: 8 },
-    activity: {
-      upvotes30d: 70,
-      comments30d: 5
-    },
-    tcrStatus: 'approved' as TCRStatus,
-    tcrEndTime: '2024-03-20T10:00:00Z',
-    stakeAmount: 50,
-    proposedChanges: defaultProposedChanges,
-    submissionType: SubmissionType.NEW,
-    votes: {
-      for: 900,
-      against: 100
-    }
-  },
-  {
-    id: '4',
-    name: 'SolanaDAO',
-    description: 'Governance platform for Solana projects',
-    type: ListingType.DAPP,
-    category: 'DAOs',
-    tags: ['Governance', 'DAO'],
-    logo: 'https://api.dicebear.com/7.x/shapes/svg?seed=SolanaDAO',
-    url: 'https://solanadao.io',
-    status: ListingStatus.PENDING,
-    makers: [
-      {
-        name: 'eve.sol',
-        avatar: 'https://api.dicebear.com/7.x/personas/svg?seed=eve',
-        profileUrl: '/profile/eve'
-      }
-    ],
-    submitter: {
-      name: 'eve.sol',
-      avatar: 'https://api.dicebear.com/7.x/personas/svg?seed=eve',
-      profileUrl: '/profile/eve'
-    },
-    submittedAt: '2024-03-16T10:00:00Z',
-    createdAt: '2024-03-16T10:00:00Z',
-    updatedAt: '2024-03-16T10:00:00Z',
-    upvotes: 45,
-    comments: { count: 2 },
-    activity: {
-      upvotes30d: 45,
-      comments30d: 2
-    },
-    tcrStatus: 'challengePeriod' as TCRStatus,
-    tcrEndTime: '2024-03-23T10:00:00Z',
-    stakeAmount: 50,
-    proposedChanges: defaultProposedChanges,
-    submissionType: SubmissionType.NEW
-  },
-  {
-    id: '5',
-    name: 'Solana RPG',
-    description: 'On-chain role-playing game with NFT characters',
-    type: ListingType.DAPP,
-    category: 'Gaming',
-    tags: ['Gaming', 'NFT', 'RPG'],
-    logo: 'https://api.dicebear.com/7.x/shapes/svg?seed=SolanaRPG',
-    url: 'https://solanargg.io',
-    status: ListingStatus.PENDING,
-    makers: [
-      {
-        name: 'frank.sol',
-        avatar: 'https://api.dicebear.com/7.x/personas/svg?seed=frank',
-        profileUrl: '/profile/frank'
-      }
-    ],
-    submitter: {
-      name: 'frank.sol',
-      avatar: 'https://api.dicebear.com/7.x/personas/svg?seed=frank',
-      profileUrl: '/profile/frank'
-    },
-    submittedAt: '2024-03-12T10:00:00Z',
-    createdAt: '2024-03-12T10:00:00Z',
-    updatedAt: '2024-03-12T10:00:00Z',
-    upvotes: 75,
-    comments: { count: 6 },
-    activity: {
-      upvotes30d: 75,
-      comments30d: 6
-    },
-    tcrStatus: 'votingPeriod' as TCRStatus,
-    tcrEndTime: '2024-03-19T10:00:00Z',
-    stakeAmount: 50,
-    proposedChanges: defaultProposedChanges,
-    submissionType: SubmissionType.NEW,
-    votes: {
-      for: 650,
-      against: 350
-    },
-    challenger: {
-      name: 'grace.sol',
-      avatar: 'https://api.dicebear.com/7.x/personas/svg?seed=grace',
-      profileUrl: '/profile/grace'
-    },
-    challengeReason: 'Game mechanics not fully developed, early to list'
-  },
-  {
-    id: '6',
-    name: 'Jupiter',
-    description: 'Leading Solana DEX aggregator - Now with margin trading',
-    type: ListingType.DAPP,
-    category: 'DeFi',
-    tags: ['DEX', 'Trading'],
-    logo: 'https://api.dicebear.com/7.x/shapes/svg?seed=Jupiter',
-    url: 'https://jupiter.io',
-    status: ListingStatus.PENDING,
-    makers: [
-      {
-        name: 'henry.sol',
-        avatar: 'https://api.dicebear.com/7.x/personas/svg?seed=henry',
-        profileUrl: '/profile/henry'
-      }
-    ],
-    submitter: {
-      name: 'henry.sol',
-      avatar: 'https://api.dicebear.com/7.x/personas/svg?seed=henry',
-      profileUrl: '/profile/henry'
-    },
-    submittedAt: '2024-03-11T10:00:00Z',
-    createdAt: '2024-03-11T10:00:00Z',
-    updatedAt: '2024-03-11T10:00:00Z',
-    upvotes: 250,
-    comments: { count: 12 },
-    activity: {
-      upvotes30d: 250,
-      comments30d: 12
-    },
-    tcrStatus: 'votingPeriod' as TCRStatus,
-    tcrEndTime: '2024-03-18T10:00:00Z',
-    stakeAmount: 50,
     proposedChanges: {
       name: false,
       description: true,
       category: false,
       logo: false
     },
-    submissionType: SubmissionType.EDIT,
-    votes: {
-      for: 800,
-      against: 200
+    stakeAmount: 50,
+    createdAt: '2024-03-22T09:00:00Z',
+    updatedAt: '2024-03-22T14:00:00Z',
+    status: ListingStatus.PENDING,
+    comments: { count: 8 },
+    activity: {
+      upvotes30d: 25,
+      comments30d: 6
     },
-    challenger: {
-      name: 'ian.sol',
-      avatar: 'https://api.dicebear.com/7.x/personas/svg?seed=ian',
-      profileUrl: '/profile/ian'
-    },
-    challengeReason: 'Margin trading feature not yet launched'
+    upvotes: 25
   },
   {
-    id: '7',
-    name: 'Solana Messenger',
-    description: 'Decentralized messaging with wallet-to-wallet encryption',
+    id: 'bonk-dao',
+    name: 'BONK DAO',
+    description: 'Community-driven DAO for BONK token governance',
     type: ListingType.DAPP,
-    category: 'Social',
-    tags: ['Messaging', 'Social'],
-    logo: 'https://api.dicebear.com/7.x/shapes/svg?seed=SolanaMessenger',
-    url: 'https://solanamessenger.io',
-    status: ListingStatus.PENDING,
-    makers: [
-      {
-        name: 'julia.sol',
-        avatar: 'https://api.dicebear.com/7.x/personas/svg?seed=julia',
-        profileUrl: '/profile/julia'
-      }
-    ],
-    submitter: {
-      name: 'julia.sol',
-      avatar: 'https://api.dicebear.com/7.x/personas/svg?seed=julia',
-      profileUrl: '/profile/julia'
-    },
-    submittedAt: '2024-03-17T10:00:00Z',
-    createdAt: '2024-03-17T10:00:00Z',
-    updatedAt: '2024-03-17T10:00:00Z',
-    upvotes: 30,
-    comments: { count: 1 },
-    activity: {
-      upvotes30d: 30,
-      comments30d: 1
-    },
-    tcrStatus: 'challengePeriod' as TCRStatus,
-    tcrEndTime: '2024-03-24T10:00:00Z',
-    stakeAmount: 50,
+    category: 'dao',
+    url: 'https://bonkdao.io',
+    logo: 'https://api.dicebear.com/7.x/shapes/svg?seed=bonkdao',
+    tags: [LISTING_TAGS.DAO, LISTING_TAGS.GOVERNANCE, LISTING_TAGS.VOTING],
+    submissionType: SubmissionType.NEW,
+    submittedAt: '2024-03-23T08:00:00Z',
+    submitter: mockCurators[4],
+    makers: getRandomMakers(5),
+    tcrStatus: 'challengePeriod',
     proposedChanges: defaultProposedChanges,
-    submissionType: SubmissionType.NEW
+    stakeAmount: 50,
+    createdAt: '2024-03-23T08:00:00Z',
+    updatedAt: '2024-03-23T08:00:00Z',
+    status: ListingStatus.PENDING,
+    comments: { count: 2 },
+    activity: {
+      upvotes30d: 15,
+      comments30d: 2
+    },
+    upvotes: 15
+  },
+  {
+    id: 'jupiter-update',
+    name: 'Jupiter',
+    description: 'Adding margin trading features to the leading Solana DEX aggregator',
+    type: ListingType.DAPP,
+    category: 'defi',
+    url: 'https://jup.ag',
+    logo: 'https://api.dicebear.com/7.x/shapes/svg?seed=jupiter',
+    tags: [LISTING_TAGS.SPOT_DEX, LISTING_TAGS.PERPS_DEX, LISTING_TAGS.LEVERAGE],
+    submissionType: SubmissionType.EDIT,
+    submittedAt: '2024-03-21T16:00:00Z',
+    submitter: mockCurators[5],
+    makers: getRandomMakers(3),
+    tcrStatus: 'votingPeriod',
+    tcrChallenger: mockCurators[6],
+    challengedAt: '2024-03-22T10:00:00Z',
+    challengeReason: 'Margin trading feature is not yet launched and tested',
+    votes: {
+      for: 80,
+      against: 20
+    },
+    proposedChanges: {
+      name: false,
+      description: true,
+      category: false,
+      logo: false
+    },
+    stakeAmount: 50,
+    createdAt: '2024-03-21T16:00:00Z',
+    updatedAt: '2024-03-22T10:00:00Z',
+    status: ListingStatus.PENDING,
+    comments: { count: 12 },
+    activity: {
+      upvotes30d: 65,
+      comments30d: 8
+    },
+    upvotes: 65
+  },
+  {
+    id: 'solana-nft-marketplace',
+    name: 'NFT Plaza',
+    description: 'Commission-free NFT marketplace with instant settlements',
+    type: ListingType.DAPP,
+    category: 'nft',
+    url: 'https://nftplaza.sol',
+    logo: 'https://api.dicebear.com/7.x/shapes/svg?seed=nftplaza',
+    tags: [LISTING_TAGS.NFT_MARKETPLACE, LISTING_TAGS.NFT_TRADING],
+    submissionType: SubmissionType.DELETE,
+    submittedAt: '2024-03-24T11:00:00Z',
+    submitter: mockCurators[7],
+    makers: getRandomMakers(2),
+    tcrStatus: 'rejected',
+    tcrChallenger: mockCurators[8],
+    challengedAt: '2024-03-24T15:00:00Z',
+    challengeReason: 'Platform is still active with significant daily volume',
+    votes: {
+      for: 10,
+      against: 90
+    },
+    proposedChanges: defaultProposedChanges,
+    stakeAmount: 50,
+    createdAt: '2024-03-24T11:00:00Z',
+    updatedAt: '2024-03-24T15:00:00Z',
+    status: ListingStatus.PENDING,
+    comments: { count: 4 },
+    activity: {
+      upvotes30d: 8,
+      comments30d: 4
+    },
+    upvotes: 8
   }
 ]; 

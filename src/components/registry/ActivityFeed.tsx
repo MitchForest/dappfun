@@ -60,7 +60,7 @@ const generateActivities = (): Activity[] => {
       id: `${listing.id}-submit`,
       type: 'submission',
       listingName: listing.name,
-      listingLogo: listing.logo,
+      listingLogo: listing.logo || 'https://api.dicebear.com/7.x/shapes/svg?seed=fallback',
       user: listing.submitter,
       timestamp: listing.submittedAt,
       submissionType: listing.submissionType
@@ -71,7 +71,7 @@ const generateActivities = (): Activity[] => {
       id: `${listing.id}-challenge`,
       type: 'challenge',
       listingName: listing.name,
-      listingLogo: listing.logo,
+      listingLogo: listing.logo || 'https://api.dicebear.com/7.x/shapes/svg?seed=fallback',
       user: listing.tcrChallenger,
       timestamp: listing.challengedAt || listing.submittedAt,
       submissionType: listing.submissionType,
@@ -79,15 +79,17 @@ const generateActivities = (): Activity[] => {
     } : null;
 
     // Generate outcome activity based on tcrStatus
-    const outcomeActivity: Activity | null = listing.tcrStatus === 'approved' || listing.tcrStatus === 'rejected' ? {
-      id: `${listing.id}-${listing.tcrStatus}`,
-      type: listing.tcrStatus,
-      listingName: listing.name,
-      listingLogo: listing.logo,
-      timestamp: listing.updatedAt || listing.submittedAt,
-      submissionType: listing.submissionType,
-      votes: listing.votes
-    } : null;
+    const outcomeActivity: Activity | null = 
+      (listing.tcrStatus === 'approved' || listing.tcrStatus === 'rejected') ? {
+        id: `${listing.id}-${listing.tcrStatus}`,
+        type: listing.tcrStatus,
+        listingName: listing.name,
+        listingLogo: listing.logo || 'https://api.dicebear.com/7.x/shapes/svg?seed=fallback',
+        user: listing.submitter, // Add submitter info for outcome activities
+        timestamp: listing.updatedAt || listing.submittedAt,
+        submissionType: listing.submissionType,
+        votes: listing.votes
+      } : null;
 
     // For unchallenged listings that are approved
     const autoApprovalActivity: Activity | null = 
@@ -96,7 +98,8 @@ const generateActivities = (): Activity[] => {
         id: `${listing.id}-auto-approved`,
         type: 'approved',
         listingName: listing.name,
-        listingLogo: listing.logo,
+        listingLogo: listing.logo || 'https://api.dicebear.com/7.x/shapes/svg?seed=fallback',
+        user: listing.submitter, // Add submitter info for auto-approvals
         timestamp: listing.updatedAt || listing.submittedAt,
         submissionType: listing.submissionType
       } : null;
@@ -135,57 +138,51 @@ function ActivityItem({ activity }: { activity: Activity }) {
   const getActivityText = () => {
     switch (activity.type) {
       case 'submission':
-        return `was submitted by ${activity.user?.name}`;
+        return <>was <strong>submitted</strong> by {activity.user?.name} 📝</>;
       case 'challenge':
-        return `was challenged by ${activity.user?.name}`;
+        return <>was <strong>challenged</strong> by {activity.user?.name} ⚔️</>;
       case 'approved':
         if (activity.votes) {
-          const { forPercent, againstPercent } = getVotePercentages(activity.votes);
-          const slashingInfo = getSlashingInfo(activity.votes, false);
-          return `was approved with ${forPercent}-${againstPercent} vote (${slashingInfo})`;
+          return <>was <strong>approved</strong> by vote ✅</>;
         }
-        return 'was automatically approved';
+        return <>was <strong>approved</strong> without challenge ✅</>;
       case 'rejected':
-        if (activity.votes) {
-          const { forPercent, againstPercent } = getVotePercentages(activity.votes);
-          const slashingInfo = getSlashingInfo(activity.votes, true);
-          return `was rejected with ${againstPercent}-${forPercent} vote (${slashingInfo})`;
-        }
-        return 'was rejected from the registry';
+        return <>was <strong>rejected</strong> by vote ❌</>;
       default:
         return '';
     }
   };
 
   return (
-    <div className="flex items-start gap-3 p-3 hover:bg-gray-50 rounded-lg transition-colors">
+    <div className="flex gap-4 p-3 hover:bg-gray-50 rounded-lg transition-colors">
       {/* Project Logo */}
       <div className="shrink-0">
-        <Image
-          src={activity.listingLogo}
-          alt={activity.listingName}
-          width={32}
-          height={32}
-          className="rounded-lg"
-          unoptimized
-        />
+        <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-gray-100 to-gray-200 overflow-hidden">
+          <Image
+            src={activity.listingLogo}
+            alt={activity.listingName}
+            width={32}
+            height={32}
+            className="w-full h-full object-cover"
+            unoptimized
+          />
+        </div>
       </div>
 
       {/* Content */}
       <div className="min-w-0 flex-1">
         <div className="flex items-center gap-2 mb-1">
           <span className="font-medium text-gray-900">{activity.listingName}</span>
-          <SubmissionTypeChip type={activity.submissionType} />
-          <span className="text-lg" role="img" aria-label={`Activity type: ${activity.type}`}>
-            {getActivityEmoji(activity.type)}
-          </span>
         </div>
         <p className="text-sm text-gray-600">
           {getActivityText()}
         </p>
-        <p className="text-xs text-gray-500 mt-0.5">
-          {formatDistanceToNow(new Date(activity.timestamp), { addSuffix: true })}
-        </p>
+        <div className="flex items-center gap-2 mt-1.5">
+          <SubmissionTypeChip type={activity.submissionType} />
+          <span className="text-xs text-gray-500">
+            {formatDistanceToNow(new Date(activity.timestamp), { addSuffix: true })}
+          </span>
+        </div>
       </div>
     </div>
   );
@@ -195,10 +192,12 @@ export default function ActivityFeed() {
   const activities = generateActivities();
 
   return (
-    <div className="bg-white rounded-xl border border-gray-200 divide-y divide-gray-100">
-      {activities.map((activity) => (
-        <ActivityItem key={activity.id} activity={activity} />
-      ))}
+    <div className="bg-white rounded-xl border border-gray-200 divide-y divide-gray-100 overflow-hidden relative">
+      <div className="relative">
+        {activities.map((activity) => (
+          <ActivityItem key={activity.id} activity={activity} />
+        ))}
+      </div>
     </div>
   );
 } 

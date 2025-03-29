@@ -52,16 +52,20 @@ export default function Navigation() {
             onMouseEnter={() => setIsDappsOpen(true)}
             onMouseLeave={() => setIsDappsOpen(false)}
           >
-            <button
+            <Link
+              href="/dapps"
               className={`flex items-center gap-1.5 py-2 transition-colors text-[15px] ${
                 isActiveLink('/dapps')
                   ? 'text-gray-900 font-medium'
                   : 'text-gray-600 hover:text-gray-800'
               }`}
             >
-              Dapps
-              <ChevronDown className={`w-3.5 h-3.5 transition-transform ${isDappsOpen ? 'rotate-180' : ''}`} />
-            </button>
+              <span>Dapps</span>
+              <ChevronDown onClick={(e) => {
+                e.preventDefault();
+                setIsDappsOpen(!isDappsOpen);
+              }} className={`w-3.5 h-3.5 transition-transform ${isDappsOpen ? 'rotate-180' : ''}`} />
+            </Link>
             {isDappsOpen && (
               <div className="absolute top-full left-0 w-56 bg-white rounded-lg shadow-lg border border-gray-200/60 p-2 space-y-1 z-50">
                 <Link
@@ -95,16 +99,20 @@ export default function Navigation() {
             onMouseEnter={() => setIsTokensOpen(true)}
             onMouseLeave={() => setIsTokensOpen(false)}
           >
-            <button
+            <Link
+              href="/tokens"
               className={`flex items-center gap-1.5 py-2 transition-colors text-[15px] ${
                 isActiveLink('/tokens')
                   ? 'text-gray-900 font-medium'
                   : 'text-gray-600 hover:text-gray-800'
               }`}
             >
-              Tokens
-              <ChevronDown className={`w-3.5 h-3.5 transition-transform ${isTokensOpen ? 'rotate-180' : ''}`} />
-            </button>
+              <span>Tokens</span>
+              <ChevronDown onClick={(e) => {
+                e.preventDefault();
+                setIsTokensOpen(!isTokensOpen);
+              }} className={`w-3.5 h-3.5 transition-transform ${isTokensOpen ? 'rotate-180' : ''}`} />
+            </Link>
             {isTokensOpen && (
               <div className="absolute top-full left-0 w-56 bg-white rounded-lg shadow-lg border border-gray-200/60 p-2 space-y-1 z-50">
                 <Link
